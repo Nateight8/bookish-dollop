@@ -1,7 +1,10 @@
+import Collections from "~/components/nav/shop/collections";
+
 export default function CategoryPage() {
   return (
     <div>
-      <h1>Category Page</h1>
+      <div className="p-8"></div>
+      <Collections />
     </div>
   );
 }

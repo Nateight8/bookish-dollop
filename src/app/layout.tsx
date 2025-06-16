@@ -24,10 +24,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body className="bg-noise relative">
+      <body className="bg-noise flex min-h-screen flex-col relative">
         <AppBarV2 session={session} />
-        <main>{children}</main>
-        <footer className="h-14">{/* Footer content will go here */}</footer>
+        <main className="flex-1">{children}</main>
+        <footer className="h-14 bg-foreground text-background">
+          {/* Footer content will go here */}
+        </footer>
       </body>
     </html>
   );

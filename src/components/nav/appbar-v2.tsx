@@ -5,15 +5,12 @@ import type React from "react";
 import { ChevronDown, UserRound } from "lucide-react";
 import { useState, useEffect, type Dispatch, type ReactNode } from "react";
 import { Button } from "~/components/ui/button";
-import { NavigationMenuLink } from "../ui/navigation-menu";
-import Link from "next/link";
 
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from "~/components/ui/menubar";
 import { Badge } from "../ui/badge";
@@ -193,7 +190,15 @@ export default function AppBarV2({ session }: { session: Session | null }) {
                 align="end"
                 className="rounded-none shadow-none p-0 w-96"
               >
-                <CartItems cartItems={cartItems || []} />
+                <CartItems
+                  cartItems={cartItems || []}
+                  onViewBag={() => {
+                    // This will close the menu
+                    document.dispatchEvent(
+                      new KeyboardEvent("keydown", { key: "Escape" })
+                    );
+                  }}
+                />
               </MenubarContent>
             </MenubarMenu>
           </Menubar>

@@ -5,6 +5,7 @@ import { IconTrash } from "@tabler/icons-react";
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import { CartAction } from "./cart-action";
+import { useRouter } from "next/navigation";
 
 interface CartItem {
   id: string;
@@ -16,11 +17,15 @@ interface CartItem {
   quantity?: number;
 }
 
+interface CartItemsProps {
+  cartItems: CartItem[];
+  onViewBag?: () => void;
+}
+
 export default function CartItems({
   cartItems: initialCartItems,
-}: {
-  cartItems: CartItem[];
-}) {
+  onViewBag,
+}: CartItemsProps) {
   const [items, setItems] = useState<CartItem[]>(
     initialCartItems.map((item) => ({
       ...item,
@@ -39,6 +44,13 @@ export default function CartItems({
 
   const removeItem = (id: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const router = useRouter();
+
+  const handleViewBag = () => {
+    router.push("/bag");
+    onViewBag?.();
   };
 
   return (
@@ -93,7 +105,9 @@ export default function CartItems({
         </ScrollArea>
       )}
       <div className="p-4 border-t">
-        <Button className="w-full">VIEW YOUR BAG</Button>
+        <Button className="w-full" onClick={handleViewBag}>
+          VIEW YOUR BAG
+        </Button>
       </div>
     </>
   );

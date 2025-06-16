@@ -13,12 +13,12 @@ export default function BookPage() {
     <div className="flex flex-col lg:flex-row md:p-8 p-0">
       {/* left side on desktop, top on mobile */}
       <div className="bg-muted w-full md:flex-1 flex items-center justify-center p-4 md:p-8">
-        <div className="relative w-full max-w-xs aspect-[5/6] lg:aspect-[3/4]">
+        <div className="relative w-full max-w-xs aspect-[5/6]">
           <Image
             src="/covers/14.jpg"
             alt="Book cover"
             fill
-            className="object-cover"
+            className="object-contain aspect-[5/6]"
             priority
           />
         </div>
@@ -54,19 +54,17 @@ export default function BookPage() {
           </div>
 
           <div className="py-4 sm:py-6 w-full">
-            <Button className="w-full sm:w-auto sm:min-w-[200px] ">
+            <Button size="lg" className="w-full sm:w-auto sm:min-w-[200px] ">
               ADD TO BAG
             </Button>
           </div>
 
           <div className="border-y h-12 sm:h-14 w-full flex items-center">
-            <p className="text-xs sm:text-sm font-medium ">
-              Delivery to 28 countries
-            </p>
+            <p className="text-sm font-medium">Delivery to 28 countries</p>
           </div>
 
           <div className="py-4 sm:py-6">
-            <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+            <p className="text-base leading-relaxed text-muted-foreground">
               Set in pre-colonial Nigeria,{" "}
               <span className="text-foreground">Things Fall Apart</span> tells
               the story of Okonkwo, a proud and powerful Igbo warrior whose life
@@ -79,12 +77,12 @@ export default function BookPage() {
             </p>
           </div>
 
-          <div className="h-12 sm:h-14 border-t border-b border-border/50 flex items-center overflow-x-auto hide-scrollbar -mx-4 px-4">
+          <div className="h-12 hidden sm:h-14 border-t border-b border-border/50 items-center overflow-x-auto hide-scrollbar -mx-4 px-4">
             <div className="flex space-x-4 sm:space-x-6 min-w-max">
-              <button className="text-xs sm:text-sm font-medium font-montserrat whitespace-nowrap">
+              <button className="text-sm font-medium font-montserrat whitespace-nowrap">
                 Details
               </button>
-              <button className="text-xs sm:text-sm font-medium font-montserrat whitespace-nowrap">
+              <button className="text-sm font-medium font-montserrat whitespace-nowrap">
                 Reviews
               </button>
               <button className="text-xs sm:text-sm font-medium font-montserrat whitespace-nowrap">

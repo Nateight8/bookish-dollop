@@ -17,6 +17,8 @@ export default async function Page() {
         )}
       </div>
       <Collections />
+      <div className="h-screen"></div>
+      <div className="h-screen"></div>
     </main>
   );
 }
