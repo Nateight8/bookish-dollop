@@ -10,29 +10,14 @@ import {
 } from "~/components/ui/tooltip";
 import { AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
+import { useBook } from "~/hooks/use-book";
 
-// Mock book data - replace with your actual data fetching
+export default function BookClient({ bookid }: { bookid: string }) {
+  const { data: bookData, isLoading } = useBook(bookid);
 
-export default async function BookClient({ bookid }: { bookid: string }) {
-  const bookData = {
-    id: "1",
-    title: "Things Fall Apart",
-    author: "Chinua Achebe",
-    publishDate: "1958",
-    price: 12.99,
-    image: `/covers/${bookid}.jpg`,
-    category: "classics",
-    description:
-      "Set in pre-colonial Nigeria, Things Fall Apart tells the story of Okonkwo, a proud and powerful Igbo warrior whose life is disrupted by the arrival of European missionaries and colonial government. The novel explores the clash between traditional African culture and the forces of change, painting a complex portrait of a society in transition. Achebe's masterpiece is a powerful meditation on the consequences of cultural collision and the price of progress.",
-  };
-
-  const [, setIsLoaded] = useState(false);
-
-  // Simulate loading state
-  useEffect(() => {
-    setIsLoaded(true);
-    return () => setIsLoaded(false);
-  }, []);
+  if (isLoading) {
+    return <div className="">loading...</div>;
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -41,7 +26,7 @@ export default async function BookClient({ bookid }: { bookid: string }) {
         <div className="bg-muted w-full md:flex-1 flex items-center justify-center p-4 md:p-8 will-change-transform">
           <div className="relative w-full max-w-xs aspect-[5/6] will-change-transform">
             <Image
-              src={bookData.image}
+              src={bookData?.image || ""}
               alt="Book cover"
               fill
               className="object-contain aspect-[5/6]"
@@ -55,12 +40,12 @@ export default async function BookClient({ bookid }: { bookid: string }) {
           <div className="lg:max-w-2xl lg:mx-auto w-full">
             <div className="flex flex-col gap-2">
               <h1 className="font-medium text-2xl sm:text-3xl md:text-4xl">
-                {bookData.title}
+                {bookData?.title}
               </h1>
               <div>
-                <p className="text-sm sm:text-base">by {bookData.author}</p>
+                <p className="text-sm sm:text-base">by {bookData?.author}</p>
                 <p className="font-medium text-muted-foreground text-sm sm:text-base">
-                  — {bookData.publishDate}
+                  — {bookData?.publishDate}
                 </p>
               </div>
               <TooltipProvider>
@@ -92,7 +77,7 @@ export default async function BookClient({ bookid }: { bookid: string }) {
 
             <div className="py-4 sm:py-6">
               <p className="text-base leading-relaxed text-muted-foreground">
-                {bookData.description}
+                {bookData?.description}
               </p>
             </div>
 

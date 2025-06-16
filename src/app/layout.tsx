@@ -1,11 +1,10 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, Montserrat } from "next/font/google";
-import AppBar from "~/components/nav/appbar";
+import { Montserrat } from "next/font/google";
 import AppBarV2 from "~/components/nav/appbar-v2";
 import { auth } from "~/server/auth";
-import { AnimatePresence } from "motion/react";
+import QueryProvider from "~/components/providers/query-provider";
 
 export const metadata: Metadata = {
   title: "Disconnect",
@@ -13,9 +12,9 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Montserrat({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-montserrat",
 });
 
 export default async function RootLayout({
@@ -24,15 +23,17 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang="en" className={`${montserrat.variable}`}>
       <body className="bg-noise flex min-h-screen flex-col relative">
-        <AppBarV2 session={session} />
+        <QueryProvider>
+          <AppBarV2 session={session} />
 
-        <main className="flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
 
-        <footer className="h-14 bg-foreground text-background">
-          {/* Footer content will go here */}
-        </footer>
+          <footer className="h-14 bg-foreground text-background">
+            {/* Footer content will go here */}
+          </footer>
+        </QueryProvider>
       </body>
     </html>
   );

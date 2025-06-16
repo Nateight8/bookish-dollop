@@ -3,107 +3,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { useRouter } from "next/navigation";
-
-const books = [
-  {
-    id: "1",
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    publishDate: "April 10, 1925",
-    price: 12.99,
-    image: "/covers/1.jpg",
-    category: "classics",
-  },
-  {
-    id: "2",
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    publishDate: "July 11, 1960",
-    price: 10.5,
-    image: "/covers/2.jpg",
-    category: "classics",
-  },
-  {
-    id: "3",
-    title: "1984",
-    author: "George Orwell",
-    publishDate: "June 8, 1949",
-    price: 9.99,
-    image: "/covers/3.jpg",
-    category: "dystopian",
-  },
-  {
-    id: "4",
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    publishDate: "January 28, 1813",
-    price: 8.75,
-    image: "/covers/4.jpg",
-    category: "romance",
-  },
-  {
-    id: "5",
-    title: "The Hobbit",
-    author: "J.R.R. Tolkien",
-    publishDate: "September 21, 1937",
-    price: 11.99,
-    image: "/covers/5.jpg",
-    category: "fantasy",
-  },
-  {
-    id: "6",
-    title: "The Catcher in the Rye",
-    author: "J.D. Salinger",
-    publishDate: "July 16, 1951",
-    price: 9.99,
-    image: "/covers/6.jpg",
-    category: "modern",
-  },
-  {
-    id: "7",
-    title: "The Lord of the Rings",
-    author: "J.R.R. Tolkien",
-    publishDate: "July 29, 1954",
-    price: 14.99,
-    image: "/covers/7.jpg",
-    category: "fantasy",
-  },
-  {
-    id: "8",
-    title: "The Odyssey",
-    author: "Homer",
-    publishDate: "8th century BC",
-    price: 12.99,
-    image: "/covers/8.jpg",
-    category: "epic",
-  },
-  {
-    id: "9",
-    title: "Crime and Punishment",
-    author: "Fyodor Dostoevsky",
-    publishDate: "1866",
-    price: 10.99,
-    image: "/covers/9.jpg",
-    category: "classic",
-  },
-  {
-    id: "10",
-    title: "Crime and Punishment",
-    author: "Fyodor Dostoevsky",
-    publishDate: "1866",
-    price: 10.99,
-    image: "/covers/10.jpg",
-    category: "classic",
-  },
-];
+import { useBooks } from "~/hooks/use-book";
+import type { Book } from "~/lib/types";
 
 export default function Collections() {
-  const router = useRouter();
+  const { data: books, isLoading } = useBooks();
+
+  if (isLoading) {
+    return <div className="">loading...</div>;
+  }
+
+  if (!books) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        NO BOOKS FOUND
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 p-4 lg:p-8">
       <AnimatePresence mode="wait">
-        {books.map((book) => {
+        {books?.map((book) => {
           // Calculate a small delay based on index for a subtle staggered effect
 
           return (
