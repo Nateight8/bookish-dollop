@@ -1,12 +1,23 @@
+import AuthStatus from "~/components/user/auth-status";
 import { auth } from "~/server/auth";
 
 export default async function Page() {
   const session = await auth();
 
   return (
-    <div className="">
-      <div className="h-14 border-b bg-background "></div>
-      <div className="h-[200vh] max-w-md bg-background mx-auto border"></div>
-    </div>
+    <main className=" h-[200vh]">
+      <div className="container mx-auto p-4">
+        {/* Your page content goes here */}
+        <h1 className="text-2xl font-bold">Welcome to Disconnect</h1>
+        {session ? (
+          <p>Welcome back, {session.user?.name}!</p>
+        ) : (
+          <p>Please sign in to continue.</p>
+        )}
+      </div>
+      <div className="h-screen bg-amber-400 w-full flex items-center justify-center">
+        {/* <AuthStatus session={session} /> */}
+      </div>
+    </main>
   );
 }

@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Ensure html and body take full height */
+html,
+body,
+#__next {
+  margin: 0;
+  padding: 0;
+}
+
 @layer utilities {
   .bg-noise {
     background-image: url("/noise/wall.png");
