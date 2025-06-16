@@ -121,14 +121,14 @@ export default function AppBarV2({ session }: { session: Session | null }) {
     <div className="w-full relaive sticky bg-background top-0 z-50">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-      <div className="flex h-14 items-center justify-between border-b relative z-20 md:px-8">
+      <div className="flex h-14 items-center justify-between border-b relative z-20 lg:px-8">
         {/* Menu Button with Hamburger to X Animation */}
-        <div className=" md:hidden flex-1">
+        <div className=" lg:hidden flex-1">
           <MenuButton open={open} setOpen={setOpen} />
         </div>
 
         {/* menu items hidden in mobile */}
-        <div className="hidden md:flex flex-1 ">
+        <div className="hidden lg:flex flex-1 ">
           {NAV_ITEMS.map((item, index) => (
             <NavItem key={index} {...item} />
           ))}
@@ -140,14 +140,14 @@ export default function AppBarV2({ session }: { session: Session | null }) {
         </div>
 
         {/* right side hidden in md */}
-        <div className="md:hidden flex-1 justify-end flex">
+        <div className="lg:hidden flex-1 justify-end flex">
           <Button variant="ghost" size="icon" className="p-0 w-14 h-full">
             <UserRound className="size-6" />
             <span className="sr-only">Profile</span>
           </Button>
         </div>
         {/* right side shown in md */}
-        <div className="flex-1 justify-end items-center hidden  h-full md:flex">
+        <div className="flex-1 justify-end items-center hidden  h-full lg:flex">
           <Menubar className="border-none p-0 bg-transparent h-full">
             <MenubarMenu>
               <MenubarTrigger className="p-0 h-full data-[state=open]:bg-muted">

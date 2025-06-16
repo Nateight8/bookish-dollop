@@ -5,6 +5,7 @@ import { Geist, Montserrat } from "next/font/google";
 import AppBar from "~/components/nav/appbar";
 import AppBarV2 from "~/components/nav/appbar-v2";
 import { auth } from "~/server/auth";
+import { AnimatePresence } from "motion/react";
 
 export const metadata: Metadata = {
   title: "Disconnect",
@@ -26,7 +27,9 @@ export default async function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body className="bg-noise flex min-h-screen flex-col relative">
         <AppBarV2 session={session} />
-        <main className="flex-1">{children}</main>
+        <AnimatePresence mode="wait">
+          <main className="flex-1">{children}</main>
+        </AnimatePresence>
         <footer className="h-14 bg-foreground text-background">
           {/* Footer content will go here */}
         </footer>
