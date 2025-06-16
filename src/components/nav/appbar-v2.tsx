@@ -43,7 +43,7 @@ const cartItems: CartItem[] = [
     id: "1",
     bookName: "The Midnight Library",
     author: "Matt Haig",
-    cover: "/images/midnight-library.jpg",
+    cover: "/covers/5.jpg",
     issueDate: "2020-08-13",
     price: "$17.99",
   },
@@ -51,7 +51,7 @@ const cartItems: CartItem[] = [
     id: "2",
     bookName: "Project Hail Mary",
     author: "Andy Weir",
-    cover: "/images/project-hail-mary.jpg",
+    cover: "/covers/2.jpg",
     issueDate: "2021-05-04",
     price: "$12.99",
   },
@@ -59,7 +59,7 @@ const cartItems: CartItem[] = [
     id: "3",
     bookName: "Dune",
     author: "Frank Herbert",
-    cover: "/images/dune.jpg",
+    cover: "/covers/3.jpg",
     issueDate: "1965-08-01",
     price: "$18.99",
   },
@@ -67,7 +67,7 @@ const cartItems: CartItem[] = [
     id: "4",
     bookName: "The Silent Patient",
     author: "Alex Michaelides",
-    cover: "/images/silent-patient.jpg",
+    cover: "/covers/4.jpg",
     issueDate: "2019-02-05",
     price: "$15.99",
   },
@@ -121,7 +121,7 @@ export default function AppBarV2({ session }: { session: Session | null }) {
   }, [open]);
 
   return (
-    <div className="w-full relaive sticky bg-background top-0">
+    <div className="w-full relaive sticky bg-background top-0 z-50">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
 
       <div className="flex h-14 items-center justify-between border-b relative z-20 md:px-8">

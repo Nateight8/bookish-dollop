@@ -72,7 +72,7 @@ function Unauthenticated() {
 
   return (
     <>
-      <div className="border-b pb-6">
+      <div className="border-b pb-6 p-4">
         <div className="pb-4">
           <h3 className="text-md font-semibold">Sign in</h3>
         </div>
@@ -126,7 +126,7 @@ function Unauthenticated() {
           Login with Google
         </Button>
       </div>
-      <div className="pt-6">
+      <div className="pt-6 p-4">
         <h3 className="text-md font-semibold">New User?</h3>
         <p className="text-muted-foreground">
           Create an account to start reading.

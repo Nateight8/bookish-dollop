@@ -1,3 +1,4 @@
+import Collections from "~/components/nav/shop/collections";
 import AuthStatus from "~/components/user/auth-status";
 import { auth } from "~/server/auth";
 
@@ -5,7 +6,7 @@ export default async function Page() {
   const session = await auth();
 
   return (
-    <main className=" h-[200vh]">
+    <main className="">
       <div className="container mx-auto p-4">
         {/* Your page content goes here */}
         <h1 className="text-2xl font-bold">Welcome to Disconnect</h1>
@@ -15,9 +16,7 @@ export default async function Page() {
           <p>Please sign in to continue.</p>
         )}
       </div>
-      <div className="h-screen bg-amber-400 w-full flex items-center justify-center">
-        {/* <AuthStatus session={session} /> */}
-      </div>
+      <Collections />
     </main>
   );
 }

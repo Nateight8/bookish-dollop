@@ -3,6 +3,8 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 import { useState } from "react";
 import { IconTrash } from "@tabler/icons-react";
 import { Button } from "~/components/ui/button";
+import Image from "next/image";
+import { CartAction } from "./cart-action";
 
 interface CartItem {
   id: string;
@@ -38,6 +40,7 @@ export default function CartItems({
   const removeItem = (id: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
+
   return (
     <>
       {items.length === 0 ? (
@@ -53,7 +56,14 @@ export default function CartItems({
             >
               <div className="grid grid-cols-5  h-40">
                 <div className=" col-span-2 bg-muted/50 border flex items-center justify-center">
-                  <div className="border bg-muted-foreground w-2/3 aspect-[5/6]"></div>
+                  <div className="border bg-muted-foreground w-2/3 aspect-[5/6] relative">
+                    <Image
+                      src={item.cover}
+                      className="object-cover"
+                      alt={item.bookName}
+                      fill
+                    />
+                  </div>
                 </div>
                 <div className="p-4 col-span-3 flex flex-col justify-between">
                   <div>
@@ -71,38 +81,11 @@ export default function CartItems({
                     </p>
                     <p className="font-medium text-foreground">{item.price}</p>
                   </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <div className="flex items-center  overflow-hidden">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, (item.quantity || 1) - 1)
-                        }
-                        className="p-1 hover:cursor-pointer rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                        aria-label="Decrease quantity"
-                      >
-                        <MinusIcon className="size-3" />
-                      </button>
-                      <span className="w-8 text-center text-sm font-medium">
-                        {item.quantity || 1}
-                      </span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, (item.quantity || 1) + 1)
-                        }
-                        className="p-1 hover:cursor-pointer rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                        aria-label="Increase quantity"
-                      >
-                        <PlusIcon className="size-3" />
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="p-1 hover:cursor-pointer rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                      aria-label="Remove item"
-                    >
-                      <IconTrash className="size-4" />
-                    </button>
-                  </div>
+                  <CartAction
+                    item={item}
+                    removeItem={removeItem}
+                    updateQuantity={updateQuantity}
+                  />
                 </div>
               </div>
             </div>

@@ -56,7 +56,7 @@ export default function AppBar() {
     <div className="w-full relative">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-      <div className="flex h-14 items-center justify-between border-b bg-background relative z-20">
+      <div className="flex h-14 items-center justify-between bg-background relative z-20">
         {/* Menu Button with Hamburger to X Animation */}
         <MenuButton open={open} setOpen={setOpen} />
 
