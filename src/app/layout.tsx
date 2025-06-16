@@ -27,9 +27,9 @@ export default async function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body className="bg-noise flex min-h-screen flex-col relative">
         <AppBarV2 session={session} />
-        <AnimatePresence mode="wait">
-          <main className="flex-1">{children}</main>
-        </AnimatePresence>
+
+        <main className="flex-1">{children}</main>
+
         <footer className="h-14 bg-foreground text-background">
           {/* Footer content will go here */}
         </footer>
