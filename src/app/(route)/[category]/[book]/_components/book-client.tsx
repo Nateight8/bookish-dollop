@@ -11,9 +11,12 @@ import {
 import { AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import { useBook } from "~/hooks/use-book";
+import { useAddToCart } from "~/hooks/use-book";
 
 export default function BookClient({ bookid }: { bookid: string }) {
   const { data: bookData, isLoading } = useBook(bookid);
+
+  const { mutate: addToCart } = useAddToCart();
 
   if (isLoading) {
     return <div className="">loading...</div>;
@@ -66,7 +69,11 @@ export default function BookClient({ bookid }: { bookid: string }) {
             </div>
 
             <div className="py-4 sm:py-6 w-full">
-              <Button size="lg" className="w-full sm:w-auto sm:min-w-[200px] ">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto sm:min-w-[200px] "
+                onClick={() => addToCart({ bookId: bookData?.id! })}
+              >
                 ADD TO BAG
               </Button>
             </div>

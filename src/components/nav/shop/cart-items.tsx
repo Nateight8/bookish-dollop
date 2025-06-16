@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import { CartAction } from "./cart-action";
 import { useRouter } from "next/navigation";
+import type { Book } from "~/lib/types";
 
 interface CartItem {
   id: string;
@@ -18,7 +19,7 @@ interface CartItem {
 }
 
 interface CartItemsProps {
-  cartItems: CartItem[];
+  cartItems: Book[];
   onViewBag?: () => void;
 }
 
@@ -26,7 +27,7 @@ export default function CartItems({
   cartItems: initialCartItems,
   onViewBag,
 }: CartItemsProps) {
-  const [items, setItems] = useState<CartItem[]>(
+  const [items, setItems] = useState<Book[]>(
     initialCartItems.map((item) => ({
       ...item,
       quantity: item.quantity || 1,
@@ -70,9 +71,9 @@ export default function CartItems({
                 <div className=" col-span-2 bg-muted/50 border flex items-center justify-center">
                   <div className="border bg-muted-foreground w-2/3 aspect-[5/6] relative">
                     <Image
-                      src={item.cover}
+                      src={item.image}
                       className="object-cover"
-                      alt={item.bookName}
+                      alt={item.title}
                       fill
                     />
                   </div>
@@ -81,14 +82,14 @@ export default function CartItems({
                   <div>
                     <h3
                       className="font-medium leading-tight mb-1 truncate"
-                      title={item.bookName}
+                      title={item.title}
                     >
-                      {item.bookName}
+                      {item.title}
                     </h3>
                     <p className="text-muted-foreground text-sm mb-3">
                       {item.author} ·{" "}
-                      {item.issueDate
-                        ? new Date(item.issueDate).getFullYear()
+                      {item.publishDate
+                        ? new Date(item.publishDate).getFullYear()
                         : ""}
                     </p>
                     <p className="font-medium text-foreground">{item.price}</p>

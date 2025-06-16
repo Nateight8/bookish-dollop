@@ -4,82 +4,86 @@ import Image from "next/image";
 import { CartAction } from "~/components/nav/shop/cart-action";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { useCart } from "~/hooks/use-book";
 
-interface CartItem {
-  id: string;
-  bookName: string;
-  author: string;
-  cover: string;
-  issueDate?: string;
-  price?: string;
+import type { Book } from '~/lib/types';
+
+interface CartItem extends Omit<Book, 'price'> {
   quantity?: number;
-  genre?: string;
+  price: string | number; // Allow both string and number for price
 }
 
-const mockBooks = [
+const mockBooks: CartItem[] = [
   {
     id: "1",
-    bookName: "The Midnight Library",
+    title: "The Midnight Library",
     author: "Matt Haig",
-    cover: "/covers/1.jpg",
-    issueDate: "2020",
-    price: "$14.99",
+    image: "/covers/5.jpg",
+    publishDate: "2020-08-13",
+    price: 17.99,
+    category: "Fiction",
+    description: "A novel about all the choices that go into a life well lived.",
     quantity: 1,
-    genre: "Fiction",
   },
   {
     id: "2",
-    bookName: "Atomic Habits",
-    author: "James Clear",
-    cover: "/covers/5.jpg",
-    issueDate: "2018",
-    price: "$16.99",
-    quantity: 2,
-    genre: "Self-Help",
+    title: "Project Hail Mary",
+    author: "Andy Weir",
+    image: "/covers/2.jpg",
+    publishDate: "2021-05-04",
+    price: 12.99,
+    category: "Science Fiction",
+    description: "An astronaut must save the earth from disaster.",
+    quantity: 1,
   },
   {
     id: "3",
-    bookName: "Dune",
+    title: "Dune",
     author: "Frank Herbert",
-    cover: "/covers/2.jpg",
-    issueDate: "1965",
-    price: "$9.99",
+    image: "/covers/3.jpg",
+    publishDate: "1965-08-01",
+    price: 18.99,
+    category: "Science Fiction",
+    description: "A story of politics, religion, and power set in a distant future.",
     quantity: 1,
-    genre: "Science Fiction",
   },
   {
     id: "4",
-    bookName: "Becoming",
+    title: "Becoming",
     author: "Michelle Obama",
-    cover: "/covers/3.jpg",
-    issueDate: "2018",
-    price: "$18.99",
+    image: "/covers/3.jpg",
+    publishDate: "2018-11-13",
+    price: 18.99,
+    category: "Memoir",
+    description: "A memoir about the former First Lady's life.",
     quantity: 1,
-    genre: "Memoir",
   },
   {
     id: "5",
-    bookName: "Project Hail Mary",
+    title: "Project Hail Mary",
     author: "Andy Weir",
-    cover: "/covers/6.jpg",
-    issueDate: "2021",
-    price: "$15.99",
+    image: "/covers/6.jpg",
+    publishDate: "2021-05-04",
+    price: 15.99,
+    category: "Science Fiction",
+    description: "An astronaut must save the earth from disaster.",
     quantity: 1,
-    genre: "Science Fiction",
   },
   {
     id: "6",
-    bookName: "The Song of Achilles",
+    title: "The Song of Achilles",
     author: "Madeline Miller",
-    cover: "/covers/4.jpg",
-    issueDate: "2011",
-    price: "$12.99",
+    image: "/covers/4.jpg",
+    publishDate: "2011-09-20",
+    price: 12.99,
+    category: "Historical Fiction",
+    description: "A novel about the Trojan War.",
     quantity: 1,
-    genre: "Historical Fiction",
   },
 ];
 
 export default function Page() {
+  const { data: cart } = useCart();
   const [cartItems, setCartItems] = React.useState<CartItem[]>(mockBooks);
 
   const updateQuantity = (id: string, newQuantity: number) => {
@@ -103,12 +107,14 @@ export default function Page() {
   );
   // Calculate subtotal
   const subtotal = cartItems
-    .reduce(
-      (sum, item) =>
-        sum +
-        parseFloat(item.price?.replace("$", "") || "0") * (item.quantity || 1),
-      0
-    )
+    .reduce((sum, item) => {
+      const price = typeof item.price === 'string'
+        ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) || 0
+        : typeof item.price === 'number' 
+          ? item.price 
+          : 0;
+      return sum + (price * (item.quantity || 1));
+    }, 0)
     .toFixed(2);
 
   return (
@@ -116,7 +122,7 @@ export default function Page() {
       <div className="md:col-span-3 w-full">
         <div className="p-4 lg:pl-8 ">
           <h3 className="text-lg font-medium">
-            Bag ({totalItems} {totalItems === 1 ? "item" : "items"})
+            Bag ({cart?.count || 0} {cart?.count === 1 ? "item" : "items"})
           </h3>
         </div>
         {cartItems.length === 0 ? (
@@ -126,7 +132,7 @@ export default function Page() {
         ) : (
           <>
             <div className="divide-y  lg:hidden">
-              {cartItems.map((book) => (
+              {cart?.items.map((book) => (
                 <CartItem
                   key={book.id}
                   item={book}
@@ -137,7 +143,7 @@ export default function Page() {
             </div>
             <ScrollArea className="hidden pl-8 lg:block h-[70svh] ">
               <div className="divide-y ">
-                {cartItems.map((book) => (
+                {cart?.items.map((book) => (
                   <CartItem
                     key={book.id}
                     item={book}
@@ -154,7 +160,7 @@ export default function Page() {
         {/* subtotal */}
         <div className="h-14 md:px-4 flex items-center text-sm justify-between text-muted-foreground">
           <h3 className="">Subtotal</h3>
-          <p className="">${subtotal}</p>
+          <p className="">${cart?.total || 0}</p>
         </div>
         {/* Estimated delivery */}
         <div className="py-4 md:px-4 space-y-4">
@@ -170,7 +176,7 @@ export default function Page() {
         {/* total */}
         <div className="h-14 md:px-4 flex items-center text-sm justify-between text-muted-foreground">
           <h3 className="">Total</h3>
-          <p className="">$39.99</p>
+          <p className="">${cart?.total || 0}</p>
         </div>
         {/* action */}
         <div className="py-4 grid md:px-4 lg:grid-cols-2 gap-4">
@@ -193,32 +199,48 @@ function CartItem({
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
 }) {
+  // Safely handle price whether it's a string or number
+  const price = typeof item.price === 'string' 
+    ? parseFloat(item.price.replace(/[^0-9.-]+/g, '') || '0')
+    : typeof item.price === 'number' 
+      ? item.price 
+      : 0;
+  const [quantity, setQuantity] = React.useState(item.quantity || 1);
+
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity < 1) return;
+    setQuantity(newQuantity);
+    updateQuantity(item.id, newQuantity);
+  };
+
   return (
-    <div className="p-4 flex ">
-      <div className="bg-muted p-4 border">
-        <div className="relative aspect-[5/6] w-24">
+    <div className="grid grid-cols-[80px_1fr] gap-4 py-4">
+      <div className="bg-muted/50 border flex items-center justify-center">
+        <div className="border bg-muted-foreground w-2/3 aspect-[5/6] relative">
           <Image
-            src={item.cover}
-            alt="Book cover"
+            src={item.image}
+            className="object-cover"
+            alt={item.title}
             fill
-            className="object-contain"
           />
         </div>
       </div>
-      <div className="flex-1 p-4 md:p-6 flex flex-col justify-between">
-        <div className="">
-          <h3 className=" text-base sm:text-lg">{item.bookName}</h3>
-          <div>
-            <p className="text-xs sm:text-sm">by {item.author}</p>
-            <p className=" font-medium text-muted-foreground text-xs sm:text-sm">
-              — {item.issueDate}
-            </p>
-          </div>
+      <div className="flex flex-col">
+        <div>
+          <h3 className="font-medium leading-tight mb-1" title={item.title}>
+            {item.title}
+          </h3>
+          <p className="text-muted-foreground text-sm mb-3">
+            {item.author} · {item.publishDate ? new Date(item.publishDate).getFullYear() : ''}
+          </p>
+          <p className="font-medium text-foreground">
+            ${(price * quantity).toFixed(2)}
+          </p>
         </div>
         <CartAction
           item={item}
-          updateQuantity={updateQuantity}
-          removeItem={removeItem}
+          updateQuantity={(id, qty) => handleQuantityChange(qty)}
+          removeItem={() => removeItem(item.id)}
         />
       </div>
     </div>

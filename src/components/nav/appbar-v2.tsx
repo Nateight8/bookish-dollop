@@ -17,6 +17,7 @@ import { Badge } from "../ui/badge";
 import CartItems from "./shop/cart-items";
 import AuthStatus from "../user/auth-status";
 import type { Session } from "next-auth";
+import { useCart } from "~/hooks/use-book";
 
 type NavItem = {
   label: string;
@@ -34,41 +35,6 @@ interface CartItem {
   issueDate?: string;
   price?: string;
 }
-
-const cartItems: CartItem[] = [
-  {
-    id: "1",
-    bookName: "The Midnight Library",
-    author: "Matt Haig",
-    cover: "/covers/5.jpg",
-    issueDate: "2020-08-13",
-    price: "$17.99",
-  },
-  {
-    id: "2",
-    bookName: "Project Hail Mary",
-    author: "Andy Weir",
-    cover: "/covers/2.jpg",
-    issueDate: "2021-05-04",
-    price: "$12.99",
-  },
-  {
-    id: "3",
-    bookName: "Dune",
-    author: "Frank Herbert",
-    cover: "/covers/3.jpg",
-    issueDate: "1965-08-01",
-    price: "$18.99",
-  },
-  {
-    id: "4",
-    bookName: "The Silent Patient",
-    author: "Alex Michaelides",
-    cover: "/covers/4.jpg",
-    issueDate: "2019-02-05",
-    price: "$15.99",
-  },
-];
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Shop" },
@@ -101,8 +67,7 @@ const styles = `
 
 export default function AppBarV2({ session }: { session: Session | null }) {
   const [open, setOpen] = useState(false);
-  const [bagOpen, setBagOpen] = useState(false);
-
+  const { data: cart } = useCart();
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (open) {
@@ -182,7 +147,7 @@ export default function AppBarV2({ session }: { session: Session | null }) {
             <MenubarMenu>
               <MenubarTrigger className="p-0 h-full data-[state=open]:bg-muted">
                 <div className="flex  items-center px-4 py-2 hover:bg-muted cursor-pointer motion-safe-transition transition-colors duration-200">
-                  <span className="text-sm">Bag ( {cartItems.length} )</span>
+                  <span className="text-sm">Bag ( {cart?.count || 0} )</span>
                 </div>
               </MenubarTrigger>
               <MenubarContent
@@ -191,7 +156,7 @@ export default function AppBarV2({ session }: { session: Session | null }) {
                 className="rounded-none shadow-none p-0 w-96"
               >
                 <CartItems
-                  cartItems={cartItems || []}
+                  cartItems={cart?.items || []}
                   onViewBag={() => {
                     // This will close the menu
                     document.dispatchEvent(

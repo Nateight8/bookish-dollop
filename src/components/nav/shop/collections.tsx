@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { useRouter } from "next/navigation";
+
 import { useBooks } from "~/hooks/use-book";
 import type { Book } from "~/lib/types";
 

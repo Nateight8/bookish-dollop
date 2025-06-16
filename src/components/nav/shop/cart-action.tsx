@@ -1,14 +1,10 @@
 import { IconTrash } from "@tabler/icons-react";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import type { Book } from "~/lib/types";
 
-interface CartItem {
-  id: string;
-  bookName: string;
-  author: string;
-  cover: string;
-  issueDate?: string;
-  price?: string;
+interface CartItem extends Omit<Book, 'price'> {
   quantity?: number;
+  price: string | number;
 }
 
 export function CartAction({
