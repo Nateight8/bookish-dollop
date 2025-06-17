@@ -1,57 +1,71 @@
-import { Delete, DeleteIcon, MinusIcon, PlusIcon, X } from "lucide-react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useState } from "react";
-import { IconTrash } from "@tabler/icons-react";
 import { Button } from "~/components/ui/button";
-import Image from "next/image";
 import { CartAction } from "./cart-action";
 import { useRouter } from "next/navigation";
-import type { Book } from "~/lib/types";
-
-interface CartItem {
-  id: string;
-  bookName: string;
-  author: string;
-  cover: string;
-  issueDate?: string;
-  price?: string;
-  quantity?: number;
-}
+import { useCart } from "~/hooks/use-book";
+import type { CartItem } from "~/lib/types";
+import { useMemo } from "react";
 
 interface CartItemsProps {
-  cartItems: Book[];
   onViewBag?: () => void;
 }
 
 export default function CartItems({
-  cartItems: initialCartItems,
   onViewBag,
 }: CartItemsProps) {
-  const [items, setItems] = useState<Book[]>(
-    initialCartItems.map((item) => ({
-      ...item,
-      quantity: item.quantity || 1,
-    }))
-  );
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return; // Don't allow quantities less than 1
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
-
+  const { data: cart } = useCart();
   const router = useRouter();
 
+  const items = useMemo(() => {
+    if (!cart?.items) return [];
+    
+    return cart.items.map(item => ({
+      id: item.id || item.bookId || '',
+      bookId: item.bookId || item.id || '',
+      title: item.title || 'Untitled Book',
+      author: item.author || 'Unknown Author',
+      image: item.image || '/placeholder-book.jpg',
+      price: item.price || 0,
+      quantity: item.quantity || 1,
+      publishDate: item.publishDate,
+      category: item.category,
+      description: item.description,
+    } as CartItem));
+  }, [cart?.items]);
+
   const handleViewBag = () => {
-    router.push("/bag");
     onViewBag?.();
+    router.push("/bag");
+  };
+
+  // Helper function to safely get the image URL
+  const getImageUrl = (item: CartItem): string => {
+    if (item.image && typeof item.image === "string") return item.image;
+    if ("cover" in item && typeof item.cover === "string") return item.cover;
+    return "/placeholder-book.jpg";
+  };
+
+  // Helper function to safely get the title
+  const getTitle = (item: CartItem): string => {
+    if (item.title && typeof item.title === "string") return item.title;
+    if ("bookName" in item && typeof item.bookName === "string")
+      return item.bookName;
+    return "Untitled Book";
+  };
+
+  // Helper function to safely get the author
+  const getAuthor = (item: CartItem): string => {
+    if (item.author && typeof item.author === "string") return item.author;
+    return "Unknown Author";
+  };
+
+  // Helper function to safely get the price
+  const getPrice = (item: CartItem): string => {
+    if (item.price) {
+      if (typeof item.price === "string") return item.price;
+      return `$${item.price.toFixed(2)}`;
+    }
+    return "$0.00";
   };
 
   return (
@@ -70,11 +84,10 @@ export default function CartItems({
               <div className="grid grid-cols-5  h-40">
                 <div className=" col-span-2 bg-muted/50 border flex items-center justify-center">
                   <div className="border bg-muted-foreground w-2/3 aspect-[5/6] relative">
-                    <Image
-                      src={item.image}
-                      className="object-cover"
-                      alt={item.title}
-                      fill
+                    <img
+                      src={getImageUrl(item)}
+                      alt={getTitle(item)}
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 </div>
@@ -82,23 +95,24 @@ export default function CartItems({
                   <div>
                     <h3
                       className="font-medium leading-tight mb-1 truncate"
-                      title={item.title}
+                      title={getTitle(item)}
                     >
-                      {item.title}
+                      {getTitle(item)}
                     </h3>
-                    <p className="text-muted-foreground text-sm mb-3">
-                      {item.author} ·{" "}
-                      {item.publishDate
-                        ? new Date(item.publishDate).getFullYear()
-                        : ""}
+                    <p className="text-sm text-muted-foreground">
+                      {getAuthor(item)}
+                      {item.publishDate && (
+                        <>
+                          {" · "}
+                          {new Date(item.publishDate).getFullYear()}
+                        </>
+                      )}
                     </p>
-                    <p className="font-medium text-foreground">{item.price}</p>
+                    <p className="font-medium text-foreground">
+                      {getPrice(item)}
+                    </p>
                   </div>
-                  <CartAction
-                    item={item}
-                    removeItem={removeItem}
-                    updateQuantity={updateQuantity}
-                  />
+                  <CartAction item={item} />
                 </div>
               </div>
             </div>

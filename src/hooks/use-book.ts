@@ -26,7 +26,11 @@ export const useBook = (id: string) => {
 export const useCart = () => {
   return useQuery({
     queryKey: ["cart"],
-    queryFn: () => cartApi.get().then((res) => res.data.data),
+    queryFn: async () => {
+      const response = await cartApi.get();
+      console.log('Cart API response:', response.data);
+      return response.data.data;
+    },
   });
 };
 
@@ -49,10 +53,13 @@ export const useUpdateCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, quantity }: { id: string; quantity: number }) =>
-      cartApi.update(id, quantity),
+    mutationFn: ({ id, bookId, quantity }: { id?: string; bookId: string; quantity: number }) =>
+      cartApi.update(bookId, quantity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: (error) => {
+      console.error("Failed to update cart:", error);
     },
   });
 };
@@ -61,7 +68,7 @@ export const useRemoveFromCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => cartApi.remove(id),
+    mutationFn: (bookId: string) => cartApi.remove(bookId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },

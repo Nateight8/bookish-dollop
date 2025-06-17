@@ -7,11 +7,24 @@ export interface Book {
   image: string;
   category: string;
   description: string;
-  quantity?: number;
+}
+
+export interface CartItem {
+  id: string; // Cart item ID
+  bookId: string; // Reference to the book
+  title: string;
+  author: string;
+  image: string;
+  price: number | string;
+  quantity: number;
+  publishDate?: string;
+  category?: string;
+  description?: string;
+  // Add any other book properties that might be needed
 }
 
 export interface Cart {
-  items: Book[];
+  items: CartItem[];
   total: number;
   count: number;
 }
@@ -22,6 +35,7 @@ export interface AddToCartRequest {
 }
 
 export interface UpdateCartRequest {
+  bookId: string;
   quantity: number;
 }
 

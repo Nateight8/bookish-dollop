@@ -156,7 +156,6 @@ export default function AppBarV2({ session }: { session: Session | null }) {
                 className="rounded-none shadow-none p-0 w-96"
               >
                 <CartItems
-                  cartItems={cart?.items || []}
                   onViewBag={() => {
                     // This will close the menu
                     document.dispatchEvent(

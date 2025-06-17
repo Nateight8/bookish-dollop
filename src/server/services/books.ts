@@ -11,7 +11,8 @@ export const booksApi = {
 export const cartApi = {
   get: () => api.get<{ data: Cart }>("/cart"),
   add: (data: AddToCartRequest) => api.post<{ data: Cart }>("/cart", data),
-  update: (id: string, quantity: number) =>
-    api.put<{ data: Cart }>(`/cart/${id}`, { quantity }),
-  remove: (id: string) => api.delete<{ data: Cart }>(`/cart/${id}`),
+  update: (bookId: string, quantity: number) =>
+    api.put<{ data: Cart }>("/cart", { bookId, quantity }),
+  remove: (bookId: string) => 
+    api.delete<{ data: Cart }>("/cart", { data: { bookId } }),
 };
