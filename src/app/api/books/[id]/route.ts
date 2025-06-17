@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import books from "~/server/db/books";
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function GET(_: Request, { params }: RouteParams) {
-  const { id } = params;
+  const { id } = await params;
 
   const book = books.find((book) => book.id === id);
 

@@ -1,29 +1,57 @@
-# Create T3 App
+# BookNook - Modern E-commerce Bookstore
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern, responsive e-commerce platform for book lovers, built with Next.js. This project showcases frontend development skills including API consumption, state management, and responsive UI design.
 
-## What's next? How do I make an app with this?
+## 🚀 Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **Modern UI/UX** built with Tailwind CSS
+- **Shopping Cart** with real-time updates
+- **Responsive Design** that works on all devices
+- **Type-Safe** with TypeScript
+- **Server Components** for better performance
+- **State Management** with React Query
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 🛠️ Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [Next.js](https://nextjs.org/) - React Framework
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [React Query](https://tanstack.com/query) - Data Fetching & State Management
+- [Shadcn/UI](https://ui.shadcn.com/) - UI Components
+- [Lucide Icons](https://lucide.dev/) - Beautiful & consistent icons
 
-## Learn More
+## 📦 Data Management
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- **In-Memory Data**: For demonstration purposes, the application uses hardcoded data instead of a production database.
+- **Image Handling**: Images are served from the public directory to simplify deployment. In a production environment, consider using a CDN or cloud storage solution.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## 🚀 Getting Started
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Run the development server:
+   ```bash
+   pnpm dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## How do I deploy this?
+## 🎯 Project Goals
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+This project was created to demonstrate:
+- Modern React patterns and best practices
+- Efficient state management with React Query
+- Clean, maintainable component architecture
+- Responsive design principles
+- API integration patterns
+
+## 📝 Note
+
+This is a frontend-focused project. For production use, consider:
+- Implementing a proper backend service
+- Setting up a database
+- Adding proper authentication flows
+- Implementing proper payment processing
+- Setting up a CDN for image assets
