@@ -9,9 +9,9 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { AnimatePresence } from "motion/react";
-import { useEffect, useState } from "react";
 import { useBook } from "~/hooks/use-book";
 import { useAddToCart } from "~/hooks/use-book";
+import LoadingState from "~/components/loading-state";
 
 export default function BookClient({ bookid }: { bookid: string }) {
   const { data: bookData, isLoading } = useBook(bookid);
@@ -19,7 +19,11 @@ export default function BookClient({ bookid }: { bookid: string }) {
   const { mutate: addToCart } = useAddToCart();
 
   if (isLoading) {
-    return <div className="">loading...</div>;
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <LoadingState />
+      </div>
+    );
   }
 
   return (

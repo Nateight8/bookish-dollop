@@ -5,12 +5,17 @@ import { motion, AnimatePresence } from "motion/react";
 
 import { useBooks } from "~/hooks/use-book";
 import type { Book } from "~/lib/types";
+import LoadingState from "~/components/loading-state";
 
 export default function Collections() {
   const { data: books, isLoading } = useBooks();
 
   if (isLoading) {
-    return <div className="">loading...</div>;
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <LoadingState />
+      </div>
+    );
   }
 
   if (!books) {
