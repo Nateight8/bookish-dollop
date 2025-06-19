@@ -51,6 +51,8 @@ export default function BookClient({ bookid }: { bookid: string }) {
                   — {bookData?.publishDate}
                 </p>
               </div>
+              <p className="text-lg font-medium">${bookData?.price}</p>
+
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>

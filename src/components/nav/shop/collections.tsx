@@ -90,6 +90,9 @@ export default function Collections() {
                   <p className="text-xs text-muted-foreground text-center">
                     by {book.author} — {book.publishDate}
                   </p>
+                  <p className="text-base mt-4 font-semibold text-foreground text-center">
+                    ${book.price}
+                  </p>
                 </div>
               </Link>
             </div>

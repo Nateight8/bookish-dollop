@@ -12,18 +12,18 @@ export default function Page() {
   // Transform cart items to match the expected CartItem structure
   const cartItems = React.useMemo(() => {
     if (!cart?.items) return [];
-    
-    return cart.items.map(item => {
+
+    return cart.items.map((item) => {
       // For cart operations, we need to use the bookId as the item ID
       // since that's what the backend API expects
-      const itemId = item.id || item.bookId || '';
-      
+      const itemId = item.id || item.bookId || "";
+
       return {
         id: itemId, // Use the bookId as the item ID for cart operations
-        bookId: item.bookId || item.id || '',
-        title: item.title || 'Untitled Book',
-        author: item.author || 'Unknown Author',
-        image: item.image || '/placeholder-book.jpg',
+        bookId: item.bookId || item.id || "",
+        title: item.title || "Untitled Book",
+        author: item.author || "Unknown Author",
+        image: item.image || "/placeholder-book.jpg",
         price: item.price || 0,
         quantity: item.quantity || 1,
         publishDate: item.publishDate,
@@ -96,8 +96,6 @@ export default function Page() {
   );
 }
 
-
-
 function CartItem({ item }: { item: CartItem }) {
   // Safely handle price whether it's a string or number
   const price =
@@ -110,7 +108,7 @@ function CartItem({ item }: { item: CartItem }) {
   console.log("ITEMS:", item.quantity);
 
   return (
-    <div className="grid grid-cols-[80px_1fr] gap-4 py-4 ">
+    <div className="grid grid-cols-[150px_1fr] gap-4 py-4 ">
       <div className="bg-muted/50 border flex items-center justify-center">
         <div className="border bg-muted-foreground w-2/3 aspect-[5/6] relative">
           <Image
@@ -121,7 +119,7 @@ function CartItem({ item }: { item: CartItem }) {
           />
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col p-4">
         <div>
           <h3 className="font-medium leading-tight mb-1" title={item.title}>
             {item.title}
@@ -131,7 +129,7 @@ function CartItem({ item }: { item: CartItem }) {
             {item.publishDate ? new Date(item.publishDate).getFullYear() : ""}
           </p>
           <p className="font-medium text-foreground">
-            {/* ${(price * quantity).toFixed(2)} */}
+            ${(price * item.quantity).toFixed(2)}
           </p>
         </div>
         <div className="pl-4">

@@ -147,7 +147,9 @@ export default function AppBarV2({ session }: { session: Session | null }) {
             <MenubarMenu>
               <MenubarTrigger className="p-0 h-full data-[state=open]:bg-muted">
                 <div className="flex  items-center px-4 py-2 hover:bg-muted cursor-pointer motion-safe-transition transition-colors duration-200">
-                  <span className="text-sm">Bag ( {cart?.count || 0} )</span>
+                  <span className="text-sm">
+                    Bag ( {cart?.items?.length || 0} )
+                  </span>
                 </div>
               </MenubarTrigger>
               <MenubarContent

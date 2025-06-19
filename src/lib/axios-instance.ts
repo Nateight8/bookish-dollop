@@ -1,10 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://yourdomain.com/api"
-      : "/api",
+  baseURL: "/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
