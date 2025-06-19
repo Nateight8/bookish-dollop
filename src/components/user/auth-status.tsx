@@ -24,8 +24,15 @@ interface User {
   image?: string | null;
 }
 
+type AuthItem = {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href?: string;
+  action?: () => void;
+};
+
 function Authenticated({ user }: { user: User }) {
-  const authItems = [
+  const authItems: AuthItem[] = [
     {
       label: "Account details",
       icon: UserRound,
@@ -49,7 +56,7 @@ function Authenticated({ user }: { user: User }) {
     {
       label: "Sign out",
       icon: LogOut,
-      href: "#",
+      action: () => signOut({ callbackUrl: "/" }),
     },
   ];
 
@@ -61,6 +68,7 @@ function Authenticated({ user }: { user: User }) {
           label={item.label}
           Icon={item.icon}
           href={item.href}
+          action={item.action}
         />
       ))}
     </div>
@@ -113,7 +121,11 @@ function Unauthenticated() {
               Forgot password?
             </a>
           </div>
-          <Button type="button" className="w-full">
+          <Button
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            type="button"
+            className="w-full"
+          >
             Sign in
           </Button>
         </form>
@@ -122,7 +134,11 @@ function Unauthenticated() {
           <span className="text-muted-foreground text-xs">Or</span>
         </div>
 
-        <Button variant="outline" className="w-full">
+        <Button
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+          variant="outline"
+          className="w-full"
+        >
           Login with Google
         </Button>
       </div>
@@ -143,17 +159,37 @@ function AuthButton({
   label,
   Icon,
   href,
+  action,
 }: {
   label: string;
   Icon: React.ComponentType<{ className?: string }>;
-  href: string;
+  href?: string;
+  action?: () => void;
 }) {
+  const content = (
+    <>
+      <Icon className="mr-2 h-4 w-4" />
+      {label}
+    </>
+  );
+
+  if (action) {
+    return (
+      <button
+        onClick={action}
+        className="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent"
+      >
+        {content}
+      </button>
+    );
+  }
+
   return (
     <Link
-      href={href}
-      className="h-14 hover:bg-muted items-center justify-start flex px-6 text-sm hover:cursor-pointer text-muted-foreground hover:text-foreground w-full"
+      href={href || "#"}
+      className="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent"
     >
-      <Icon className="size-4 mr-2" /> {label}
+      {content}
     </Link>
   );
 }
