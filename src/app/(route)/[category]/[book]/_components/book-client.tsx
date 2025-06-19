@@ -12,11 +12,32 @@ import { AnimatePresence } from "motion/react";
 import { useBook } from "~/hooks/use-book";
 import { useAddToCart } from "~/hooks/use-book";
 import LoadingState from "~/components/loading-state";
+import { toast } from "sonner";
 
 export default function BookClient({ bookid }: { bookid: string }) {
   const { data: bookData, isLoading } = useBook(bookid);
 
   const { mutate: addToCart } = useAddToCart();
+
+  const handleAddToCart = () => {
+    if (!bookData) return;
+    
+    addToCart(
+      { bookId: bookData.id },
+      {
+        onSuccess: (data) => {
+          if (data?.message) {
+            toast.info(data.message);
+          } else {
+            toast.success("Book added to cart");
+          }
+        },
+        onError: (error: Error) => {
+          toast.error(error.message || "Failed to add to cart");
+        },
+      }
+    );
+  };
 
   if (isLoading) {
     return (
@@ -77,8 +98,8 @@ export default function BookClient({ bookid }: { bookid: string }) {
             <div className="py-4 sm:py-6 w-full">
               <Button
                 size="lg"
-                className="w-full sm:w-auto sm:min-w-[200px] "
-                onClick={() => addToCart({ bookId: bookData?.id! })}
+                className="w-full sm:w-auto sm:min-w-[200px]"
+                onClick={handleAddToCart}
               >
                 ADD TO BAG
               </Button>

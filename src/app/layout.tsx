@@ -5,6 +5,7 @@ import { Montserrat } from "next/font/google";
 import AppBarV2 from "~/components/nav/appbar-v2";
 import { auth } from "~/server/auth";
 import QueryProvider from "~/components/providers/query-provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Disconnect",
@@ -27,9 +28,8 @@ export default async function RootLayout({
       <body className="bg-noise flex min-h-screen flex-col relative">
         <QueryProvider>
           <AppBarV2 session={session} />
-
           <main className="flex-1">{children}</main>
-
+          <Toaster position="bottom-right" richColors />
           <footer className="h-14 bg-foreground text-background">
             {/* Footer content will go here */}
           </footer>
