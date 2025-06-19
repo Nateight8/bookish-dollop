@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { ChevronDown, UserRound } from "lucide-react";
+import { ChevronDown, ShoppingCart, UserRound } from "lucide-react";
 import { useState, useEffect, type Dispatch, type ReactNode } from "react";
 import { Button } from "~/components/ui/button";
 
@@ -18,6 +18,7 @@ import CartItems from "./shop/cart-items";
 import AuthStatus from "../user/auth-status";
 import type { Session } from "next-auth";
 import { useCart } from "~/hooks/use-book";
+import { useRouter } from "next/navigation";
 
 type NavItem = {
   label: string;
@@ -68,6 +69,7 @@ const styles = `
 export default function AppBarV2({ session }: { session: Session | null }) {
   const [open, setOpen] = useState(false);
   const { data: cart } = useCart();
+  const router = useRouter();
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (open) {
@@ -106,9 +108,19 @@ export default function AppBarV2({ session }: { session: Session | null }) {
 
         {/* right side hidden in md */}
         <div className="lg:hidden flex-1 justify-end flex">
-          <Button variant="ghost" size="icon" className="p-0 w-14 h-full">
-            <UserRound className="size-6" />
-            <span className="sr-only">Profile</span>
+          <Button
+            onClick={() => router.push("/bag")}
+            variant="ghost"
+            size="icon"
+            className="p-0 w-14 h-full relative"
+          >
+            <ShoppingCart className="size-6" />
+            {cart?.items && cart.items.length > 0 && (
+              <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
+                {Math.min(cart.items.length, 99)}
+              </span>
+            )}
+            <span className="sr-only">Cart</span>
           </Button>
         </div>
         {/* right side shown in md */}
